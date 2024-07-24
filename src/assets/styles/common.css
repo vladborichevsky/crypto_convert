@@ -1,0 +1,22 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Montserrat', sans-serif;
+  text-align: center;
+}
+
+body {
+  background: rgb(20, 29, 208);
+  background: linear-gradient(216deg, rgb(28, 57, 159) 0%, rrgb(28, 123, 225)100%);
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#app {
+  width: 100%;
+  min-height: 100vh;
+}

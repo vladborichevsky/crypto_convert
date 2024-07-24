@@ -1,0 +1,12 @@
+:root {
+  --main-color: rgb(5, 14, 186);
+  --dark-blue: rgb(20, 29, 208);
+  --deep-dark-blue: #24043e;
+  --red-color: rgb(246, 33, 33);
+  --yellow-color: rgb(255 212 29);
+  --white-color: #ffff;
+  --main-linear-gradient:linear-gradient(216deg, rgba(34,193,195,1) 0%, rgba(45,144,253,1) 100%);
+
+  --border-radius-btn: 10px;
+  --border-radius-input: 3px;
+}
