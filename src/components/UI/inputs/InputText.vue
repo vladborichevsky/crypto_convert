@@ -1,18 +1,18 @@
 <template>
   <input 
-    :value="modelValue" 
+    class="w-32 h-8 outline-none border-0 rounded shadow-base text-xs px-2 py-2 my-1.5 mx-2.5 text-left text-deep_dark_blue md:w-fit lg:h-12 lg:px-4 lg:py-2.5 lg:text-base"
+    :value="modelValue"
+    type="text"
     @input="[ updateModelValue($event.target.value), showHelpCurrenciesList() ]"
     @keydown.enter="setInputVal"
-    @focus="changeInputInFocus" 
-    type="text">
+    @focus="changeInputInFocus">
 </template>
 
 
-
 <script>
-  export default {
-    name: 'input-text',
+  import { defineComponent } from 'vue'
 
+  export default defineComponent({
     props: {
       modelValue: {
         type: String,
@@ -20,49 +20,29 @@
       }
     },
 
-    emits:[
-      'updateModelValue', 'setInputVal', 'showHelpCurrenciesList', 'changeInputInFocus'
-    ],
+    name: 'InputText',
 
-    methods: {
-      updateModelValue(value) {
-        this.$emit('updateModelValue', value.toUpperCase())
-      },
+    setup(props, { emit }) {
 
-      setInputVal() {
-        if(this.modelValue.length > 0) {
-          this.$emit('setInputVal')
-        }  
-      },
-
-      showHelpCurrenciesList() {
-        this.$emit('showHelpCurrenciesList')
-      },
-
-      changeInputInFocus() {
-        this.$emit('changeInputInFocus')
+      const updateModelValue = (value) => {
+        emit('updateModelValue', value.toUpperCase())
       }
+
+      const setInputVal = () => {
+        if(props.modelValue.length > 0) {
+          emit('setInputVal')
+        }  
+      }
+
+      const showHelpCurrenciesList = () => {
+        emit('showHelpCurrenciesList')
+      }
+
+      const changeInputInFocus = () => {
+        emit('changeInputInFocus')
+      }
+
+      return { props, updateModelValue, setInputVal, showHelpCurrenciesList, changeInputInFocus }
     }
-  }
+  })
 </script>
-
-
-
-<style scoped>
-  input {
-    width: 200px;
-    outline: none;
-    border-radius: var(--border-radius-input);
-    border: 0;
-    padding: 10px 15px;
-    background-color: var(--white-color);
-    color: var(--main-color);
-    font-size: 18px;
-    text-align: left;
-    margin: 5px;
-  }
-  
-  label {
-    color: var(--white-color);
-  }
-</style>

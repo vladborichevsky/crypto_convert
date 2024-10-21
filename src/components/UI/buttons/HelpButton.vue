@@ -1,37 +1,24 @@
 <template>
   <button 
-    @click="setInputVal()" 
-    class="help_button">
+    class="help-btn h-8 cursor-pointer bg-grey_color text-xs my-1.5 mr-1.5 px-2 py-2 lg:hover:text-white lg:hover:bg-deep_dark_blue lg:focus:text-white lg:focus:bg-deep_dark_blue"
+    @click="setInputVal()">
       <slot></slot>
   </button>
 </template>
 
+
 <script>
-  export default {
-    name: 'help-button',
+  import { defineComponent } from 'vue'
 
-    emits:{
-      setInputVal: null
-    },
+  export default defineComponent({
+    name: 'HelpButton',
+    setup(props, { emit }) {
 
-    methods: {
-      setInputVal() {
-        this.$emit('setInputVal')
-      },
+      const setInputVal = () => {
+        emit('setInputVal')
+      }
+
+      return { setInputVal }
     }
-    
-  }
+  })
 </script>
-
-<style scoped>
-  .help_button {
-    cursor: pointer;
-    padding: 2px 3px;
-    margin: 0 3px;
-  }
-
-  .help_button:hover {
-    background-color: var(--deep-dark-blue);
-    color: var(--white-color);
-  }
-</style>

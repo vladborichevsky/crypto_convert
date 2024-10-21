@@ -1,46 +1,24 @@
 <template>
-  <button 
-    @click="sendData()" 
-    className="convert_btn">
+  <button
+    class="min-w-32 h-8 my-1.5 mx-2.5 px-2 py-2 text-xs cursor-pointer text-deep_dark_blue uppercase rounded bg-grey_color transition lg:h-12 lg:px-4 lg:py-2.5 lg:text-base lg:hover:shadow-base lg:hover:text-white" 
+    @click="sendData()">
       конвертировать
   </button>
 </template>
 
 
-
 <script>
-  export default {
-    name: 'convert-button',
+  import { defineComponent } from 'vue'
 
-    emits:{
-      sendData: null
-    },
+  export default defineComponent({
+    name: 'ConvertButton',
+    setup(props, { emit }) {
 
-    methods: {
-      sendData() {
-        this.$emit('sendData')
+      const sendData = () => {
+        emit('sendData')
       }
+
+      return { sendData }
     }
-  }
+  })
 </script>
-
-
-
-<style scoped>
-  .convert_btn {
-    width: 200px;
-    height: 52px;
-    padding: 10px 15px;
-    color: var(--yellow-color);
-    text-transform: uppercase;
-    cursor: pointer;
-    border: 3px solid var(--deep-dark-blue);
-    border-radius: var(--border-radius-btn);
-    background-color: var(--deep-dark-blue);
-    font-size: 16px;
-  }
-
-  .convert_btn:hover {
-    color: var(--white-color);
-  }
-</style>

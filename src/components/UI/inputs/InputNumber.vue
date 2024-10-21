@@ -1,18 +1,17 @@
 <template>
-  <input 
+  <input
+    class="w-32 h-8 outline-none border-0 rounded shadow-base text-xs px-2 py-2 my-1.5 mx-2.5 text-left text-deep_dark_blue md:w-fit lg:h-12 lg:px-4 lg:py-2.5 lg:text-base"
     :value="modelValue" 
+    type="number"
+    min=0
     @input="UpdateModelValue($event.target.value)"
-    @keydown.enter="sendData()"
-    type="number" 
-    min=0>
+    @keydown.enter="sendData()">
 </template>
 
-
-
 <script>
-  export default {
-    name: 'input-number',
+  import { defineComponent } from 'vue'
 
+  export default defineComponent({
     props: {
       modelValue: {
         type: String,
@@ -20,39 +19,19 @@
       }
     },
 
-    emits:[
-      'update:modelValue', 'sendData'
-    ],
+    name: 'InputNumber',
 
-    methods: {
-      UpdateModelValue(event) {
-        this.$emit('update:modelValue', event)
-      },
-      
-      sendData() {
-        this.$emit('sendData')
+    setup(props, { emit }) {
+
+      const UpdateModelValue = (event) => {
+        emit('update:modelValue', event)
       }
+      
+      const sendData = () => {
+        emit('sendData')
+      }
+
+      return { props, UpdateModelValue, sendData }
     }
-  }
+  })
 </script>
-
-
-
-<style scoped>
-  input {
-    width: 200px;
-    outline: none;
-    border-radius: var(--border-radius-input);
-    border: 0;
-    padding: 10px 15px;
-    background-color: var(--white-color);
-    color: var(--main-color);
-    font-size: 18px;
-    text-align: left;
-    margin: 5px;
-  }
-  
-  label {
-    color: var(--white-color);
-  }
-</style>

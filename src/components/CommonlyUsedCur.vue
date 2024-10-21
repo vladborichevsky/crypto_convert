@@ -1,131 +1,76 @@
 
 <template>
-  <p className="description">Часто используемые валюты:</p>
-  <div class="component_wrapper">
-    <ul>
-      <li 
-        v-for="([from, to], index) in commonlyUsedCurrenciesUpCase"
-        :key="index" 
-        @click.stop="activateSelector(from, to, index)"
-        :class="{ active: activeSelector == index}">
-          {{ from }} &#10132; {{ to }}
-      </li>
-    </ul>
+  <div>
+    <p class="mt-7 uppercase text-deep_dark_blue font-medium">
+      Часто используемые валюты:
+    </p>
 
-    <input-number
-      v-model="sum"
-      @click.stop
-      @sendData="sendDataFromSelectors()"
-      placeholder="Сумма"
-      title="Введите сумму"/>
+    <div class="mt-3 mb-3.5 mx-auto sm:flex sm:justify-center sm:items-center lg:mt-5">
+      <div class="flex flex-col justify-center items-center sm:flex-row ">
+        <commonly-used-cur-btn
+            v-for="([from, to], index) in commonlyUsedCurrenciesUpCase"
+            :key="index"
+            :class="{ 'bg-deep_dark_blue': activeSelector == index, 'text-white': activeSelector == index }"
+            @click.stop="activateSelector(from, to, index)">
+              {{ from }} &#10132; {{ to }}
+          </commonly-used-cur-btn>
+      </div>
 
-    <convert-button
-      @click.stop="sendDataFromSelectors()"/>
+      <input-number
+        v-model="sum"
+        @click.stop
+        @sendData="sendDataFromSelectors()"
+        placeholder="Сумма"
+        title="Введите сумму"/>
+
+      <convert-button
+        @click.stop="sendDataFromSelectors()"/>
+    </div>
   </div>
 </template>
   
   
-  
-  
-<script>
+<script setup>
+  import { ref, computed, watch } from 'vue'
+
   // массив с часто используемыми конвертациями криптовалют
   const commonlyUsedCurrenciesArr = [['btc', 'usdt'], ['btc', 'eth'], ['eth', 'btc'], ['eth', 'usdt']]
+  const sum = ref('')
+  const fromCurrency = ref('')
+  const toCurrency = ref('')
+  const activeSelector = ref(-1)
 
-  export default {
-    props: {
-      isSelectorChoosen: {
-        type: Boolean,
-        required: true
-      }
-    },
+  const props = defineProps({
+    isSelectorChoosen: Boolean,
+  })
 
-    emits:{
-      activatedSelector: null,
-      sendDataFromSelectors: null
-    },
+  const emit = defineEmits(['activatedSelector', 'sendDataFromSelectors'])
 
-    data() {
-      return {
-        sum: '',
-        fromCurrency: '',
-        toCurrency: '',
-        activeSelector: -1
-      }
-    },
+  const commonlyUsedCurrenciesUpCase = computed(() => {
+    return commonlyUsedCurrenciesArr.map(item => [item[0].toUpperCase(), item[1].toUpperCase()])
+  }) 
 
-    computed: {
-      commonlyUsedCurrenciesUpCase() {
-        return commonlyUsedCurrenciesArr.map(item => [item[0].toUpperCase(), item[1].toUpperCase()])
-      }
-    },
 
-    methods: {
-      activateSelector(from, to, index) {
-        this.fromCurrency = from
-        this.toCurrency = to
-        this.activeSelector = index
-        this.$emit('activatedSelector')
-      },
+  const activateSelector = (from, to, index) => {
+    fromCurrency.value = from
+    toCurrency.value = to
+    activeSelector.value = index
+    emit('activatedSelector')
+  }
       
-      sendDataFromSelectors() {
-        this.$emit('sendDataFromSelectors', this.fromCurrency, this.toCurrency, this.sum)
-      }
-    },
+  const sendDataFromSelectors = () => {
+    emit('sendDataFromSelectors', fromCurrency.value, toCurrency.value, sum.value)
+  }
     
-    watch: {
-      isSelectorChoosen() {
-        if(!this.isSelectorChoosen) {
-          this.sum = ''
-          this.fromCurrency = ''
-          this.toCurrency = ''
-          this.activeSelector = -1
-        }
+  watch(
+    () => props.isSelectorChoosen,
+    () => {
+      if(!props.isSelectorChoosen) {
+        sum.value = ''
+        fromCurrency.value = ''
+        toCurrency.value = ''
+        activeSelector.value = -1
       }
     }
-  }
+  )
 </script>
-
-
-
-<style scoped>
-  .component_wrapper{
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin: 0 auto;
-    margin-top: 20px;
-    width: 85%;
-  }
-
-  .description {
-    margin-top: 150px;
-    color: var(--white-color);
-    text-transform: uppercase;
-  }
-
-  ul {
-    display: flex;
-    list-style: none;
-    width: 90%;
-    padding: 0;
-  }
-
-  li {
-    width: 110px;
-    margin: 5px;
-    display: block;
-    padding: 12px 10px;
-    color: var(--dark-blue);
-    font-weight: 500;
-    background-color: var(--white-color);
-    text-align: center;
-    border: 3px solid var(--deep-dark-blue);
-    border-radius: var(--border-radius-btn);
-  }
-
-  li:hover, .active {
-    cursor: pointer;
-    background-color: var(--deep-dark-blue);
-    color: var(--white-color);
-  }
-</style>

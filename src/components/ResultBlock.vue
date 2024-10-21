@@ -1,37 +1,29 @@
 <template>
-  <div class="result_wrapper">
-    <div className="result">{{ result }}</div>
-    <div className="result_descr"> {{ resultDescr }}</div>
+  <div class="min-h-24 flex flex-col justify-center items-center lg:min-h-32">
+    <p
+      v-if="!result" 
+      class="text-xl text-red-800">
+        {{ errorMes }}
+    </p>
+
+    <div
+      v-if="!errorMes"  
+      class="text-2xl font-black text-deep_dark_blue sm:text-4xl md:text-5xl lg:text-6xl">
+        {{ result }}
+    </div>
+
+    <div 
+      v-if="!errorMes"
+      class="text-base font-medium text-deep_dark_blue md:text-xl">
+        {{ resultDescr }}
+    </div>
   </div>
 </template>
 
-<script>
-  export default {
-    props: {
-      result: {
-        type: [ Number, String ],
-        required: true
-      },
-
-      resultDescr: {
-        type: String,
-        required: true
-      }
-    }
-  }
+<script setup>
+  const props = defineProps({
+    result: [ Number, String ],
+    resultDescr: String,
+    errorMes: String
+  })
 </script>
-
-<style scoped>
-  .result_wrapper {
-    min-height: 120px;
-  }
-
-  .result {
-    font-family: 'Nabla', system-ui;
-    font-size: 60px;
-  }
-
-  .result_descr {
-    color:var(--white-color);
-  }
-</style>
