@@ -1,6 +1,8 @@
 import './assets/styles/main.scss'
 
-import { createApp } from 'vue'
+import {
+  createApp
+} from 'vue'
 import App from '@/App.vue'
 import UIcomponents from '@/components/UI/componentsLib.js' // импортируем файл componentsLib.js
 

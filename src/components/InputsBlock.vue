@@ -1,4 +1,3 @@
-
 <template>
   <div class="min-h-24 sm:flex sm:justify-center">
     <div class="sm:flex sm:justify-center">
@@ -12,7 +11,8 @@
         @click="changeHideHelpBtns"
         @changeInputInFocusFunc="changeInputInFocusFunc"
         @showHelpCurrenciesList="showHelpCurrenciesList(fromCurrency)"
-        @setInputValue="setInputValue"/>
+        @setInputValue="setInputValue"
+      />
 
       <input-with-help-btns
         v-model="toCurrency"
@@ -23,7 +23,8 @@
         :title="titleCur"
         @changeInputInFocusFunc="changeInputInFocusFunc"
         @showHelpCurrenciesList="showHelpCurrenciesList(toCurrency)"
-        @setInputValue="setInputValue"/>
+        @setInputValue="setInputValue"
+      />
     </div>
 
     <div>
@@ -31,95 +32,92 @@
         v-model="sum"
         @sendData="sendData()"
         :placeholder="placeholderSum"
-        :title="titleSum"/>
+        :title="titleSum"
+      />
 
-      <convert-button
-        @sendData="sendData()"/>
+      <convert-button @sendData="sendData()" />
     </div>
   </div>
 </template>
 
-
-
-
 <script setup>
-  import { ref, watch } from 'vue';
-  import InputWithHelpBtns from './InputWithHelpBtns.vue';
+import { ref, watch } from 'vue'
+import InputWithHelpBtns from './InputWithHelpBtns.vue'
 
-  const titleCur = 'Введите криптовалюту'
-  const titleSum = 'Введите сумму'
-  const placeholderFrom = 'Из какой валюты'
-  const placeholderTo = 'В какую валюту'
-  const placeholderSum = 'Сумма'
-  
-  const inputNameFrom = 'from'
-  const inputNameTo = 'to'
+const titleCur = 'Введите криптовалюту'
+const titleSum = 'Введите сумму'
+const placeholderFrom = 'Из какой валюты'
+const placeholderTo = 'В какую валюту'
+const placeholderSum = 'Сумма'
 
-  const fromCurrency = ref('')
-  const toCurrency = ref('')
-  const sum = ref('')
-  const helpCurrenciestList = ref([])
-  const inputInFocus = ref('')
+const inputNameFrom = 'from'
+const inputNameTo = 'to'
 
-  const props = defineProps({
-    convertList: Array,
-    isSelectorChoosen: Boolean,
-    hideHelpBtns: Boolean
-  })
+const fromCurrency = ref('')
+const toCurrency = ref('')
+const sum = ref('')
+const helpCurrenciestList = ref([])
+const inputInFocus = ref('')
 
-  const emit = defineEmits(['sendData', 'changeHideHelpBtns'])
+const props = defineProps({
+  convertList: Array,
+  isSelectorChoosen: Boolean,
+  hideHelpBtns: Boolean,
+})
 
-  watch(
-    () => props.isSelectorChoosen,
-    () => {
-      if(props.isSelectorChoosen) {
-        fromCurrency.value = ''
-        toCurrency.value = ''
-        sum.value = ''
-        helpCurrenciestList.value = []
-      }
-    }
-  )
+const emit = defineEmits(['sendData', 'changeHideHelpBtns'])
 
-  watch(
-    () => props.hideHelpBtns,
-    () => {
-      if(props.hideHelpBtns) {
-        helpCurrenciestList.value = []
-      }
-    }
-  )
-
-  const showHelpCurrenciesList = (val) => {
-    changeHideHelpBtns()
-    if (val == '') {
+watch(
+  () => props.isSelectorChoosen,
+  () => {
+    if (props.isSelectorChoosen) {
+      fromCurrency.value = ''
+      toCurrency.value = ''
+      sum.value = ''
       helpCurrenciestList.value = []
-    } else {
-      helpCurrenciestList.value = props.convertList.filter(item => item.includes(val) )
     }
   }
-        
-  const sendData = () => {
-    emit('sendData', fromCurrency.value, toCurrency.value, sum.value)
+)
+
+watch(
+  () => props.hideHelpBtns,
+  () => {
+    if (props.hideHelpBtns) {
+      helpCurrenciestList.value = []
+    }
+  }
+)
+
+const showHelpCurrenciesList = (val) => {
+  changeHideHelpBtns()
+  if (val == '') {
+    helpCurrenciestList.value = []
+  } else {
+    helpCurrenciestList.value = props.convertList.filter((item) => item.includes(val))
+  }
+}
+
+const sendData = () => {
+  emit('sendData', fromCurrency.value, toCurrency.value, sum.value)
+}
+
+const setInputValue = (id, val) => {
+  if (helpCurrenciestList.value.length == 0) {
+    return false
   }
 
-  const setInputValue = (id, val) => {
-    if(helpCurrenciestList.value.length == 0) {
-      return false
-    } 
+  if (id == 'from') fromCurrency.value = val
+  if (id == 'to') toCurrency.value = val
 
-    if(id == 'from') fromCurrency.value = val
-    if(id == 'to') toCurrency.value = val
+  helpCurrenciestList.value = []
+}
 
-    helpCurrenciestList.value = [] 
-  }
+const changeInputInFocusFunc = (inputName) => {
+  if (inputName == 'from') inputInFocus.value = 'from'
+  if (inputName == 'to') inputInFocus.value = 'to'
+}
 
-  const changeInputInFocusFunc = (inputName) => {
-    if(inputName == 'from') inputInFocus.value = 'from'
-    if(inputName == 'to') inputInFocus.value = 'to'
-  }
-
-  const changeHideHelpBtns = () => {
-    emit('changeHideHelpBtns')
-  }
+const changeHideHelpBtns = () => {
+  emit('changeHideHelpBtns')
+}
 </script>
